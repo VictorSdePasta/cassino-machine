@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Bases</title>
+    <link rel="stylesheet" href="./css/machine.css">
+</head>
+
+<body>
+    <!-- contêiner principal -->
+    <div id="container">
+        <!-- título da página -->
+        <h1>SPTecher's Machine</h1>
+        <!-- entrada de valor -->
+        <input id="inputValue" type="text" placeholder="Digite o valor">
+        <!-- seleção da base -->
+        <select id="inputBase">
+            <option value="decimal">Decimal</option>
+            <option value="hexadecimal">Hexadecimal</option>
+            <option value="octal">Octal</option>
+            <option value="binario">Binário</option>
+        </select>
+        <br><br>
+        <!-- opções de conversão -->
+        <h3>Converter para:</h3>
+        <input type="checkbox" id="convertDecimal"><label for="convertDecimal">Decimal</label>
+        <input type="checkbox" id="convertHexadecimal"><label for="convertHexadecimal">Hexadecimal</label>
+        <input type="checkbox" id="convertOctal"><label for="convertOctal">Octal</label>
+        <input type="checkbox" id="convertBinario"><label for="convertBinario">Binário</label>
+        <br><br>
+        <!-- botão de conversão -->
+        <button onclick="converter()">Converter</button>
+        <!-- saída de resultados -->
+        <div id="output"></div>
+    </div>
+</body>
+<script src="./js/calculo.js"></script>
+
+</html>

@@ -1,0 +1,84 @@
+/* estilo para o corpo da página */
+body {
+  font-family: Arial, sans-serif;
+  /* define a fonte utilizada */
+  background-color: #63B1BC;
+  /* define a cor de fundo do corpo da página */
+  margin: 0;
+  /* remove margens externas */
+  padding: 0;
+  /* remove preenchimento externo */
+}
+
+/* estilo para o contêiner principal */
+#container {
+  width: 80%;
+  /* define a largura do contêiner */
+  margin: 50px auto;
+  /* centraliza o contêiner horizontalmente */
+  text-align: center;
+  /* alinha o conteúdo ao centro */
+}
+
+/* estilo para o cabeçalho */
+h1 {
+  color: #1F2A44;
+  /* define a cor do texto do cabeçalho */
+}
+
+/* estilo para a entrada de texto */
+input[type="text"] {
+  padding: 8px;
+  /* define o preenchimento interno */
+  font-size: 16px;
+  /* define o tamanho da fonte */
+  border-radius: 5px;
+  /* define o raio das bordas */
+}
+
+/* estilo para seleção e botão */
+select,
+button {
+  padding: 8px;
+  /* define o preenchimento interno */
+  font-size: 16px;
+  /* define o tamanho da fonte */
+  border-radius: 5px;
+  /* define o raio das bordas */
+  cursor: pointer;
+  /* altera o cursor ao passar por cima */
+}
+
+/* estilo para o botão */
+button {
+  background-color: #ED145B;
+  /* define a cor de fundo do botão */
+  color: #FFFFFF;
+  /* define a cor do texto do botão */
+  border: none;
+  /* remove a borda do botão */
+}
+
+/* estilo para o botão ao passar o mouse por cima */
+button:hover {
+  background-color: #EFB661;
+  /* altera a cor de fundo ao passar o mouse */
+}
+
+/* estilo para a saída de resultados */
+#output {
+  margin-top: 20px;
+  /* define a margem superior */
+  padding: 10px;
+  /* define o preenchimento interno */
+  border-radius: 5px;
+  /* define o raio das bordas */
+  background-color: #D0D3D4;
+  /* define a cor de fundo */
+  border: 1px solid #63666A;
+  /* define a borda */
+  text-align: left;
+  /* alinha o texto à esquerda */
+  display: none;
+  /* inicialmente oculta a saída */
+}
