@@ -10,21 +10,22 @@ body {
   font-size: 2vw;
   background-image: url('./assets/0-images/casino\ table.png');
   background-size: cover;
+  background-repeat: no-repeat;
+  height: 97vh;
+  width: 97vw;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   font-family: "Pixelify Sans", sans-serif;
 }
 
 .mesaSuperior {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .logo {
-  margin: 0;
-  padding: 0;
   background-image: url('./assets/Edição\ imagens/logo.png');
   background-size: contain;
   background-repeat: no-repeat;
@@ -36,9 +37,53 @@ body {
   color: white;
 }
 
+.mesaMeio {
+  width: 100%;
+  padding-left: 1%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mesaInferior {
+  display: flex;
+  flex-direction: column;
+}
+
+.mao {
+  align-self: center;
+}
+
+.hud {
+  width: 100%;
+  padding-left: 1%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.placar {
+  background-image: url('./assets/Edição\ imagens/placar.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 29.297vw;
+  aspect-ratio: 6/1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & .titulo {
+    margin-left: 2vh;
+  }
+
+  & .pontuacao {
+    margin-right: 2vh;
+    text-align: right;
+  }
+}
+
 a {
   & img{
-    height: 2.28vw;
+    width: 2.28vw;
     aspect-ratio: 1/1;
   }
 }
