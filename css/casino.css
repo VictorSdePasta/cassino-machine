@@ -1,7 +1,44 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
+
+.root {
   margin: 0;
   padding: 0;
-  background-image: url('./assets/0-images/10081437.jpg');
-  background-repeat: repeat;
+  font-family: "Pixelify Sans", sans-serif;
+}
+
+body {
+  font-size: 2vw;
+  background-image: url('./assets/0-images/casino\ table.png');
   background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Pixelify Sans", sans-serif;
+}
+
+.mesaSuperior {
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  margin: 0;
+  padding: 0;
+  background-image: url('./assets/Edição\ imagens/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  aspect-ratio: 5/1;
+  width: 28.646vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+a {
+  & img{
+    height: 2.28vw;
+    aspect-ratio: 1/1;
+  }
 }
