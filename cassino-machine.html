@@ -15,11 +15,11 @@
     <div class="campoBaralho">
       <div class="linha">
         <div class="baralho">
-          <a href="" onclick="sacar()">
+          <button onclick="sacarConversao()">
             <img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/card_back.png" alt="Carta Virada" style="height: 15.98vh;">
-          </a>
+          </button>
         </div>
-        <div class="conversaoAtual"></div>
+        <div id="divCartaConversao" class="conversaoAtual"></div>
       </div>
       <div class="especial"></div>
     </div>
@@ -40,8 +40,8 @@
       <div class="menu">
         <a href=""><img src="./css/assets/kenney_cursor-pixel-pack/Tiles/tile_0073.png" alt=""></a>
         <a href=""><img src="./css/assets/kenney_cursor-pixel-pack/Tiles/tile_0210.png" alt=""></a>
-        <a href=""><img src="./css/assets/kenney_cursor-pixel-pack/Tiles/tile_0180.png" alt=""></a>
-        <a href="" onclick="musica()"><img src="./css/assets/Edição imagens/audio.png" alt=""></a>
+        <button><img src="./css/assets/kenney_cursor-pixel-pack/Tiles/tile_0180.png" alt=""></button>
+        <button onclick="musica()"><img src="./css/assets/Edição imagens/audio.png" alt=""></button>
       </div>
       <div class="placar">
         <div class="titulo">Placar:</div>
@@ -50,4 +50,6 @@
     </div>
   </div>
 </body>
+<script src="./js/cartas.js"></script>
+<script src="./js/calculo.js"></script>
 </html>

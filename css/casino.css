@@ -6,6 +6,14 @@
   font-family: "Pixelify Sans", sans-serif;
 }
 
+button {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0069.png'),auto;
+}
+
 body {
   font-size: 2vw;
   background-image: url('./assets/0-images/casino\ table.png');
@@ -17,6 +25,11 @@ body {
   flex-direction: column;
   justify-content: space-between;
   font-family: "Pixelify Sans", sans-serif;
+  cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0087.png'), auto;
+}
+
+a {
+  cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0069.png'), auto;
 }
 
 .mesaSuperior {
@@ -41,6 +54,10 @@ body {
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+
+.linha {
+  display: flex;
 }
 
 .campoBaralho {
@@ -69,6 +86,13 @@ body {
   justify-content: space-between;
   align-items: center;
 
+  & button {
+    & img {
+      width: 2.28vw;
+      aspect-ratio: 1/1;
+    }
+  }
+  
   & a {
     & img {
       width: 2.28vw;
