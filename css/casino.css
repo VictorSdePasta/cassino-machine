@@ -39,9 +39,18 @@ body {
 
 .mesaMeio {
   width: 100%;
-  padding-left: 1%;
   display: flex;
   justify-content: space-between;
+}
+
+.campoBaralho {
+  margin-left: 4.5vw;
+}
+
+.missao {
+  text-align: right;
+  font-size: .5em;
+  margin-right: 2.5vw;
 }
 
 .mesaInferior {
@@ -59,6 +68,13 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  & a {
+    & img {
+      width: 2.28vw;
+      aspect-ratio: 1/1;
+    }
+  }
 }
 
 .placar {
@@ -78,12 +94,5 @@ body {
   & .pontuacao {
     margin-right: 2vh;
     text-align: right;
-  }
-}
-
-a {
-  & img{
-    width: 2.28vw;
-    aspect-ratio: 1/1;
   }
 }
