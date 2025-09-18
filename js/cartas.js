@@ -25,10 +25,9 @@ function sacarConversao() {
   } else if (cartaConversao == 3) {
     cartaConversao = 'octal'
     document.getElementById('divCartaConversao').innerHTML=`<img src="./css/assets/Edição imagens/convertion_card_octal.png" alt="Carta Octal" style="height: 15.98vh;">`
-  } else if (cartaConversao == 4) {
+  } else {
     cartaConversao = 'binario'
     document.getElementById('divCartaConversao').innerHTML=`<img src="./css/assets/Edição imagens/convertion_card_binario.png" alt="Carta Binario" style="height: 15.98vh;">`
-  } else {
   }
 
   if (Math.random() <= chanceEspecial) {
@@ -39,11 +38,34 @@ function sacarConversao() {
   }
 }
 
-function sacar() {
-  Math.ceil(Math.random() * 2 - 1) //Sortear numero de 0 a 1
-  Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
-  Math.ceil(Math.random() * 10 - 1) //Sortear numero de 0 a 9
-  Math.ceil(Math.random() * 16 - 1) //Sortear numero de 0 a 15
+function saqueInicial() {
+  var saqueIncicial = Math.ceil(Math.random() * 4 + 1)
+  var numero = ''
+  var base = ''
+
+  if (saqueIncicial == 1) {
+    base = 'decimal'
+    for (var i=0; i<=3; i++) {
+      numero += Math.ceil(Math.random() * 10 - 1) //Sortear numero de 0 a 9
+    }
+  } else if (saqueIncicial == 2) {
+    base = 'hexadecimal'
+    for (var i=0; i<=2; i++) {
+      numero += '0123456789ABCDEF'[Math.ceil(Math.random() * 16 - 1)] //Sortear numero de 0 a 15
+    }
+  } else if (saqueIncicial == 2) {
+    base = 'octal'
+    for (var i=0; i<=3; i++) {
+      numero += Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
+    }
+  } else {
+    base = 'binario'
+    for (var i=0; i<=5; i++) {
+      numero += Math.ceil(Math.random() * 2 - 1) //Sortear numero de 0 a 1
+    }
+  }
+
+  transformarCartas(base, numero)
 }
 
 function saqueEspecial() {
@@ -58,5 +80,18 @@ function saqueEspecial() {
     // Multiplica por 2, 5 ou 7
   } else {
     // Valor Máximo
+  }
+}
+
+function transformarCartas(base, valor) {
+  var cartas = []
+  if (base == 'decimal') {
+    for (var i=0; i<valor.length-1;) {
+      [valor[i]]
+      i++
+    }
+  } else if (base=='hexadecimal') {
+  } else if (base=='octal') {
+  } else {
   }
 }
