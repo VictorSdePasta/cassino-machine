@@ -1,5 +1,6 @@
 var cartaConversao;
 var chanceEspecial = .05;
+var comeco = false;
 
 function sacarConversao() {
   if (cartaConversao == 'decimal') {
@@ -36,9 +37,14 @@ function sacarConversao() {
   } else {
     chanceEspecial += .01
   }
+
+  if(!comeco) {
+    saqueInicial()
+  }
 }
 
 function saqueInicial() {
+  comeco = true
   var saqueIncicial = Math.ceil(Math.random() * 4 + 1)
   var numero = ''
   var base = ''
@@ -53,7 +59,7 @@ function saqueInicial() {
     for (var i=0; i<=2; i++) {
       numero += '0123456789ABCDEF'[Math.ceil(Math.random() * 16 - 1)] //Sortear numero de 0 a 15
     }
-  } else if (saqueIncicial == 2) {
+  } else if (saqueIncicial == 3) {
     base = 'octal'
     for (var i=0; i<=3; i++) {
       numero += Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
@@ -65,10 +71,15 @@ function saqueInicial() {
     }
   }
 
-  transformarCartas(base, numero)
+  var msg = ``
+  var cartas = transformarCartas(base, numero)
+  for (var i=0; i<cartas.length;i++) {
+    msg += `<input type="checkbox" id="cartaMao${i}"><label class="labelCarta" for="cartaMao${i}"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${cartas[i]}" style="height: 15.98vh"></label>`
+  };
+  document.getElementById('mao').innerHTML = msg
 }
 
-function saqueEspecial() {
+function saqueEspecial(lista, numero) {
   var especial = Math.random().toFixed(2)
   if (especial <= .05) {
     // Comprar 3 cartas especiais
@@ -84,14 +95,27 @@ function saqueEspecial() {
 }
 
 function transformarCartas(base, valor) {
-  var cartas = []
+  var cartas = [];
   if (base == 'decimal') {
     for (var i=0; i<valor.length-1;) {
-      [valor[i]]
+      cartas.push(`card_spades_${valor[i]}.png`)
       i++
     }
   } else if (base=='hexadecimal') {
+    for (var i=0; i<valor.length-1;) {
+      cartas.push(`card_clubs_${valor[i]}_hexa.png`)
+      i++
+    }
   } else if (base=='octal') {
+    for (var i=0; i<valor.length-1;) {
+      cartas.push(`card_diamonds_${valor[i]}.png`)
+      i++
+    }
   } else {
+    for (var i=0; i<valor.length-1;) {
+      cartas.push(`card_hearts_${valor[i]}.png`)
+      i++
+    }
   }
+  return cartas
 }
