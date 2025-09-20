@@ -1,6 +1,7 @@
 var cartaConversao;
 var chanceEspecial = .05;
 var comeco = false;
+var cartas = []
 
 function sacarConversao() {
   if (cartaConversao == 'decimal') {
@@ -72,14 +73,14 @@ function saqueInicial() {
   }
 
   var msg = ``
-  var cartas = transformarCartas(base, numero)
+  cartas = transformarCartas(base, numero)
   for (var i=0; i<cartas.length;i++) {
-    msg += `<input type="checkbox" id="cartaMao${i}"><label class="labelCarta" for="cartaMao${i}"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${cartas[i]}" style="height: 15.98vh"></label>`
+    msg += `<input type="checkbox" id="cartaMao${i}"><label class="labelCarta" for="cartaMao${i}" onclick="moverConversao()"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${cartas[i]}" style="height: 15.98vh"></label>`
   };
   document.getElementById('mao').innerHTML = msg
 }
 
-function saqueEspecial(lista, numero) {
+function saqueEspecial() {
   var especial = Math.random().toFixed(2)
   if (especial <= .05) {
     // Comprar 3 cartas especiais
