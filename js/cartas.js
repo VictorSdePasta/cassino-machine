@@ -1,7 +1,7 @@
-var cartaConversao;
-var chanceEspecial = .05;
-var comeco = false;
-var cartas = []
+let cartaConversao;
+let chanceEspecial = .05;
+let comeco = false;
+let cartas = []
 
 function sacarConversao() {
   if (cartaConversao == 'decimal') {
@@ -46,42 +46,42 @@ function sacarConversao() {
 
 function saqueInicial() {
   comeco = true
-  var saqueIncicial = Math.ceil(Math.random() * 4 + 1)
-  var numero = ''
-  var base = ''
+  let saqueIncicial = Math.ceil(Math.random() * 4 + 1)
+  let numero = ''
+  let base = ''
 
   if (saqueIncicial == 1) {
     base = 'decimal'
-    for (var i=0; i<=3; i++) {
+    for (let i=0; i<=3; i++) {
       numero += Math.ceil(Math.random() * 10 - 1) //Sortear numero de 0 a 9
     }
   } else if (saqueIncicial == 2) {
     base = 'hexadecimal'
-    for (var i=0; i<=2; i++) {
+    for (let i=0; i<=2; i++) {
       numero += '0123456789ABCDEF'[Math.ceil(Math.random() * 16 - 1)] //Sortear numero de 0 a 15
     }
   } else if (saqueIncicial == 3) {
     base = 'octal'
-    for (var i=0; i<=3; i++) {
+    for (let i=0; i<=3; i++) {
       numero += Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
     }
   } else {
     base = 'binario'
-    for (var i=0; i<=5; i++) {
+    for (let i=0; i<=5; i++) {
       numero += Math.ceil(Math.random() * 2 - 1) //Sortear numero de 0 a 1
     }
   }
 
-  var msg = ``
+  let msg = ``
   cartas = transformarCartas(base, numero)
-  for (var i=0; i<cartas.length;i++) {
-    msg += `<input type="checkbox" id="cartaMao${i}"><label class="labelCarta" for="cartaMao${i}" onclick="moverConversao()"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${cartas[i]}" style="height: 15.98vh"></label>`
+  for (let i=0; i<cartas.length;i++) {
+    msg += `<div id="campoCartaMao${i}"><input type="checkbox" id="cartaMao${i}"><label class="labelCarta" for="cartaMao${i}" onclick="moverConversao('campoCartaMao${i}')"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${cartas[i]}" style="height: 15.98vh"></label></div>`
   };
   document.getElementById('mao').innerHTML = msg
 }
 
 function saqueEspecial() {
-  var especial = Math.random().toFixed(2)
+  let especial = Math.random().toFixed(2)
   if (especial <= .05) {
     // Comprar 3 cartas especiais
   } else if (especial <= .2) {
@@ -96,27 +96,36 @@ function saqueEspecial() {
 }
 
 function transformarCartas(base, valor) {
-  var cartas = [];
+  let cartas = [];
   if (base == 'decimal') {
-    for (var i=0; i<valor.length-1;) {
+    for (let i=0; i<valor.length-1;) {
       cartas.push(`card_spades_${valor[i]}.png`)
       i++
     }
   } else if (base=='hexadecimal') {
-    for (var i=0; i<valor.length-1;) {
+    for (let i=0; i<valor.length-1;) {
       cartas.push(`card_clubs_${valor[i]}_hexa.png`)
       i++
     }
   } else if (base=='octal') {
-    for (var i=0; i<valor.length-1;) {
+    for (let i=0; i<valor.length-1;) {
       cartas.push(`card_diamonds_${valor[i]}.png`)
       i++
     }
   } else {
-    for (var i=0; i<valor.length-1;) {
+    for (let i=0; i<valor.length-1;) {
       cartas.push(`card_hearts_${valor[i]}.png`)
       i++
     }
   }
   return cartas
+}
+
+function moverConversao(carta) {
+  let cartaAMover = document.getElementById(`${carta}`)
+  let destino = document.getElementById(`divConversor`)
+
+  destino.appendChild(cartaAMover)
+
+  converter()
 }
