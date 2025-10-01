@@ -119,7 +119,6 @@ function transformarCartas(base, valor) {
       i++
     }
   }
-  return cartas
 }
 
 let ordemConversao = []
@@ -143,6 +142,8 @@ function moverConversao(elementoCarta, carta) {
 }
 
 function converter() {
+  novoTurno = true
+  
   let numeroAConverter = ''
   let numeroConvertido
   let msg = ``
@@ -151,50 +152,56 @@ function converter() {
     numeroAConverter += `${ordemConversao[i][caracter]}`
   };
 
-  console.log(numeroAConverter + ' numero a converter')
-  console.log(baseAtual + ' base atual')
-
   let decimalValue = parseInt(numeroAConverter, baseAtual === 'hexadecimal' ? 16 : baseAtual === 'octal' ? 8 : baseAtual === 'binario' ? 2 : 10);
 
-  console.log(decimalValue + ' decimal')
-
-  console.log(cartaConversao + ' cartaConversao')
-  console.log(baseAtual+ ' base')
   if (cartaConversao == 'decimal') {
     numeroConvertido = `${decimalValue}`;
-  }
-  if (cartaConversao == 'hexadecimal') {
+  } else if (cartaConversao == 'hexadecimal') {
     numeroConvertido = `${decimalValue.toString(16).toUpperCase()}`;
-  }
-  if (cartaConversao == 'octal') {
+  } else if (cartaConversao == 'octal') {
     numeroConvertido = `${decimalValue.toString(8)}`;
-  }
-  if (cartaConversao == 'binario') {
+  } else if (cartaConversao == 'binario') {
     numeroConvertido = `${decimalValue.toString(2)}`;
   }
 
-  console.log(numeroConvertido + ' numero convertido')
-
   let novasCartas = []
-
 
   for (let i = 0; i <= numeroConvertido.length - 1; i++) {
     if (cartaConversao == 'decimal') {
       novasCartas.push(`card_spades_${numeroConvertido[i]}.png`)
-    }
-    else if (cartaConversao == 'hexadecimal') {
+    } else if (cartaConversao == 'hexadecimal') {
       novasCartas.push(`card_clubs_${numeroConvertido[i]}.png`)
-    }
-    else if (cartaConversao == 'octal') {
+    } else if (cartaConversao == 'octal') {
       novasCartas.push(`card_diamonds_${numeroConvertido[i]}.png`)
-    }
-    else if (cartaConversao == 'binario') {
+    } else if (cartaConversao == 'binario') {
       novasCartas.push(`card_hearts_${numeroConvertido[i]}.png`)
     }
   }
 
   for (let i = 0; i <= numeroConvertido.length - 1; i++) {
-    msg += `<div id="campoCartaConvertido${i}"><input type="checkbox" id="cartaConvertida${i}"><label class="labelCarta" for="cartaConvertida${i}" onclick="moverMao('campoCartaConvertido${i}', '${novasCartas[i]}')"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${novasCartas[i]}" style="height: 15.98vh"></label></div>`
+    msg += `<div id="campoCartaConvertido${i}"><input type="checkbox" id="cartaConvertida${i}"><label class="labelCarta" for="cartaConvertida${i}" onclick="moverMao('${novasCartas[i]}', 'campoCartaConvertido${i}')"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${novasCartas[i]}" style="height: 15.98vh"></label></div>`
   }
   document.getElementById('divResultadoConversao').innerHTML = msg
+}
+
+let novoTurno = false
+
+function moverMao(carta, eliminar) {
+  if (novoTurno) {
+    document.getElementById(`divConversor`).innerHTML = ``
+    document.getElementById(`mao`).innerHTML = ``
+    novoTurno = false
+    cartas = []
+    ordemConversao = []
+  }
+
+  cartas.push(carta)
+  document.getElementById(`${eliminar}`).remove()
+
+  let msg = ``
+  for (let i = 0; i < cartas.length; i++) {
+    conversoes++
+    msg += `<div id="campoCartaMao${i}"><input type="checkbox" id="cartaMao${i}"><label class="labelCarta" for="cartaMao${i}" onclick="moverConversao('campoCartaMao${i}', '${cartas[i]}')"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${cartas[i]}" style="height: 15.98vh"></label></div>`
+  };
+  document.getElementById('mao').innerHTML = msg
 }
