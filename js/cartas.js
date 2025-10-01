@@ -5,6 +5,10 @@ let comeco = false
 let cartas = []
 
 function sacarConversao() {
+  if (comeco) {
+    baseAtual = cartaConversao
+  }
+
   if (cartaConversao == 'decimal') {
     cartaConversao = Math.ceil(Math.random() * 3 + 1)
   } else if (cartaConversao == 'hexadecimal') {
@@ -145,7 +149,7 @@ function converter() {
   novoTurno = true
   
   let numeroAConverter = ''
-  let numeroConvertido
+  let numeroConvertido = ''
   let msg = ``
   for (let i = 0; i <= ordemConversao.length - 1; i++) {
     let caracter = ordemConversao[i].length - 5
@@ -179,14 +183,14 @@ function converter() {
   }
 
   for (let i = 0; i <= numeroConvertido.length - 1; i++) {
-    msg += `<div id="campoCartaConvertido${i}"><input type="checkbox" id="cartaConvertida${i}"><label class="labelCarta" for="cartaConvertida${i}" onclick="moverMao('${novasCartas[i]}', 'campoCartaConvertido${i}')"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${novasCartas[i]}" style="height: 15.98vh"></label></div>`
+    msg += `<div id="campoCartaConvertido${i}"><input type="checkbox" id="cartaConvertida${i}"><label class="labelCarta" for="cartaConvertida${i}" onclick="moverMao('campoCartaConvertido${i}', '${novasCartas[i]}')"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${novasCartas[i]}" style="height: 15.98vh"></label></div>`
   }
   document.getElementById('divResultadoConversao').innerHTML = msg
 }
 
 let novoTurno = false
 
-function moverMao(carta, eliminar) {
+function moverMao(eliminar, carta) {
   if (novoTurno) {
     document.getElementById(`divConversor`).innerHTML = ``
     document.getElementById(`mao`).innerHTML = ``
