@@ -92,13 +92,6 @@ input {
   all: unset;
 }
 
-input[type=checkbox]:checked+.labelCarta {
-  height: 100%;
-  background-color: purple;
-  box-shadow: 0px 0px 1vw 1vh purple;
-  cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0069.png'), auto;
-}
-
 .hud {
   width: 100%;
   padding-left: 1%;

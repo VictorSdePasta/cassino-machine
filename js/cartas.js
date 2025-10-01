@@ -3,10 +3,13 @@ let baseAtual = ''
 let chanceEspecial = .05
 let comeco = false
 let cartas = []
+let converteu = false
+let limiteMao
 
 function sacarConversao() {
-  if (comeco) {
+  if (comeco && converteu) {
     baseAtual = cartaConversao
+    converteu = false
   }
 
   if (cartaConversao == 'decimal') {
@@ -51,7 +54,22 @@ function sacarConversao() {
 
 function saqueInicial() {
   comeco = true
-  let saqueIncicial = Math.ceil(Math.random() * 4 + 1)
+
+  let saqueIncicial
+  if (cartaConversao == 'decimal') {
+    saqueIncicial = Math.ceil(Math.random() * 3 + 1)
+  } else if (cartaConversao == 'hexadecimal') {
+    saqueIncicial = Math.ceil(Math.random() * 3 + 2)
+    if (cartaConversao == 5) { cartaConversao = 1 }
+  } else if (cartaConversao == 'octal') {
+    saqueIncicial = Math.ceil(Math.random() * 3)
+    if (cartaConversao == 3) { cartaConversao = 4 }
+  } else if (cartaConversao == 'binario') {
+    saqueIncicial = Math.ceil(Math.random() * 3)
+  } else {
+    saqueIncicial = Math.ceil(Math.random() * 4 + 1)
+  }
+  
   let numero = ''
 
   if (saqueIncicial == 1) {
@@ -147,6 +165,7 @@ function moverConversao(elementoCarta, carta) {
 
 function converter() {
   novoTurno = true
+  converteu = true
   
   let numeroAConverter = ''
   let numeroConvertido = ''
@@ -199,13 +218,17 @@ function moverMao(eliminar, carta) {
     ordemConversao = []
   }
 
-  cartas.push(carta)
-  document.getElementById(`${eliminar}`).remove()
-
-  let msg = ``
-  for (let i = 0; i < cartas.length; i++) {
-    conversoes++
-    msg += `<div id="campoCartaMao${i}"><input type="checkbox" id="cartaMao${i}"><label class="labelCarta" for="cartaMao${i}" onclick="moverConversao('campoCartaMao${i}', '${cartas[i]}')"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${cartas[i]}" style="height: 15.98vh"></label></div>`
-  };
-  document.getElementById('mao').innerHTML = msg
+  let limiteCartas = cartaConversao == 'decimal' ? 5 : cartaConversao == 'binario' ? 16 : cartaConversao == 'hexadecimal' ? 4 : 6
+  
+  if (cartas.length<limiteCartas) {
+    cartas.push(carta)
+    document.getElementById(`${eliminar}`).remove()
+    
+    let msg = ``
+    for (let i = 0; i < cartas.length; i++) {
+      conversoes++
+      msg += `<div id="campoCartaMao${i}"><input type="checkbox" id="cartaMao${i}"><label class="labelCarta" for="cartaMao${i}" onclick="moverConversao('campoCartaMao${i}', '${cartas[i]}')"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${cartas[i]}" style="height: 15.98vh"></label></div>`
+    };
+    document.getElementById('mao').innerHTML = msg
+  }
 }
