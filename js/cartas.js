@@ -7,6 +7,8 @@ let converteu = false
 let limiteMao
 let jogoComecou = false
 let limitou = false
+let pontuacao = Math.floor(Math.random() * 99999999999999 + 1)
+document.getElementById('divPontuacao').innerHTML = pontuacao
 
 function sacarConversao(local) {
   if ((local == 'site' && !jogoComecou) || local == 'codigo') {
@@ -188,6 +190,8 @@ function converter() {
 
   let decimalValue = parseInt(numeroAConverter, baseAtual === 'hexadecimal' ? 16 : baseAtual === 'octal' ? 8 : baseAtual === 'binario' ? 2 : 10);
 
+  pontuar(decimalValue, baseAtual, cartaConversao)
+
   if (cartaConversao == 'decimal') {
     numeroConvertido = `${decimalValue}`;
   } else if (cartaConversao == 'hexadecimal') {
@@ -198,6 +202,7 @@ function converter() {
     numeroConvertido = `${decimalValue.toString(2)}`;
   }
 
+  missao(numeroAConverter)
   missao(numeroConvertido)
 
   let novasCartas = []
@@ -259,32 +264,43 @@ let missaoBin = ''
 let missaoDec = ''
 let missaoHex = ''
 let missaoOct = ''
+
 function missao(valor) {
   if (valor == missaoBin) {
-    let algarBin = Math.ceil(Math.random() * 15 - 1)
+    pontuacao += missaoBin
+    let algarBin = Math.ceil(Math.random() * 8 - 1)
+    console.log(algarBin)
     for (let i = 0; i <= algarBin; i++) {
       missaoBin += Math.ceil(Math.random() * 2 - 1) //Sortear numero de 0 a 1
+      console.log(missaoBin)
     }
     missaoBin = `${missaoBin / 1}`
   } else if (valor == missaoDec) {
+    pontuacao += missaoDec
     let algarDec = Math.ceil(Math.random() * 6 - 1)
+    console.log(algarDec)
     for (let i = 0; i <= algarDec; i++) {
       missaoDec += Math.ceil(Math.random() * 10 - 1) //Sortear numero de 0 a 9
+      console.log(missaoDec)
     }
     missaoDec = `${missaoDec / 1}`
   } else if (valor == missaoHex) {
+    pontuacao += missaoHex
     let algarHex = Math.ceil(Math.random() * 5 - 1)
+    console.log(algarHex)
     for (let i = 0; i <= algarHex; i++) {
       missaoHex += '0123456789ABCDEF'[Math.ceil(Math.random() * 16 - 1)] //Sortear numero de 0 a 15
     }
   } else if (valor == missaoOct) {
-    let algarOct = Math.ceil(Math.random() * 7 - 1)
+    pontuacao += missaoOct
+    let algarOct = Math.ceil(Math.random() * 5 - 1)
+    console.log(algarOct)
     for (let i = 0; i <= algarOct; i++) {
       missaoOct += Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
     }
     missaoOct = `${missaoOct / 1}`
   } else if (missaoBin == '') {
-    let algarBin = Math.ceil(Math.random() * 15 - 1)
+    let algarBin = Math.ceil(Math.random() * 8 - 1)
     for (let i = 0; i <= algarBin; i++) {
       missaoBin += Math.ceil(Math.random() * 2 - 1) //Sortear numero de 0 a 1
     }
@@ -296,13 +312,15 @@ function missao(valor) {
     for (let i = 0; i <= algarHex; i++) {
       missaoHex += '0123456789ABCDEF'[Math.ceil(Math.random() * 16 - 1)] //Sortear numero de 0 a 15
     }
-    let algarOct = Math.ceil(Math.random() * 7 - 1)
+    let algarOct = Math.ceil(Math.random() * 5 - 1)
     for (let i = 0; i <= algarOct; i++) {
       missaoOct += Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
     }
-    missaoBin = `${missaoBin / 1}`
-    missaoDec = `${missaoDec / 1}`
-    missaoOct = `${missaoOct / 1}`
+
+    missaoBin = `${(missaoBin / 1) == 0 ? 1 : (missaoBin / 1)}`
+    missaoDec = `${(missaoDec / 1) == 0 ? 1 : (missaoDec / 1)}`
+    missaoOct = `${(missaoOct / 1) == 0 ? 1 : (missaoOct / 1)}`
+    missaoHex = `${(missaoHex) === '0' ? '1' : (missaoHex)}`
   }
 
   document.getElementById('divMissao').innerHTML = `
@@ -312,4 +330,34 @@ function missao(valor) {
     ${missaoOct} - Oct ♦ <br>
     ${missaoHex} - Hex ♣
   `
+}
+
+function pontuar(numero, base, conversao) {
+  let pontos = numero
+
+  let lista
+
+  if (base == 'hexadecimal') {
+    lista = ['hexadecimal', 'binario', 'decimal', 'octal']
+  } else if (base == 'decimal') {
+    lista = ['decimal', 'octal', 'hexadecimal', 'binario']
+  } else if (base == 'binario') {
+    lista = ['binario', 'hexadecimal', 'octal', 'decimal']
+  } else if (base == 'octal') {
+    lista = ['octal', 'decimal', 'binario', 'hexadecimal']
+  }
+
+  let mult = Number(lista.indexOf(base) - lista.indexOf(conversao))
+
+  if (mult < 0) {
+    mult *= -1
+  }
+
+  pontuacao -= pontos * Math.floor(1 + (mult / 100))
+
+  if (pontuacao <= 0) {
+    pontuacao = 0
+  }
+
+  document.getElementById('divPontuacao').innerHTML = pontuacao
 }
