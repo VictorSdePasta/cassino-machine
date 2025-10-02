@@ -7,7 +7,7 @@ let converteu = false
 let limiteMao
 let jogoComecou = false
 let limitou = false
-let pontuacao = Math.floor(Math.random() * 99999999999999 + 1)
+let pontuacao = Math.floor(Math.random() * 9999 + 1)
 document.getElementById('divPontuacao').innerHTML = pontuacao
 
 function sacarConversao(local) {
@@ -267,34 +267,33 @@ let missaoOct = ''
 
 function missao(valor) {
   if (valor == missaoBin) {
-    pontuacao += missaoBin
+    pontuacao -= missaoBin
     let algarBin = Math.ceil(Math.random() * 8 - 1)
-    console.log(algarBin)
+    missaoBin = ``
     for (let i = 0; i <= algarBin; i++) {
       missaoBin += Math.ceil(Math.random() * 2 - 1) //Sortear numero de 0 a 1
-      console.log(missaoBin)
     }
     missaoBin = `${missaoBin / 1}`
   } else if (valor == missaoDec) {
-    pontuacao += missaoDec
+    pontuacao -= missaoDec
     let algarDec = Math.ceil(Math.random() * 6 - 1)
-    console.log(algarDec)
+    missaoDec = ``
     for (let i = 0; i <= algarDec; i++) {
       missaoDec += Math.ceil(Math.random() * 10 - 1) //Sortear numero de 0 a 9
       console.log(missaoDec)
     }
     missaoDec = `${missaoDec / 1}`
   } else if (valor == missaoHex) {
-    pontuacao += missaoHex
+    pontuacao -= missaoHex
     let algarHex = Math.ceil(Math.random() * 5 - 1)
-    console.log(algarHex)
+    missaoHex = ``
     for (let i = 0; i <= algarHex; i++) {
       missaoHex += '0123456789ABCDEF'[Math.ceil(Math.random() * 16 - 1)] //Sortear numero de 0 a 15
     }
   } else if (valor == missaoOct) {
-    pontuacao += missaoOct
+    pontuacao -= missaoOct
     let algarOct = Math.ceil(Math.random() * 5 - 1)
-    console.log(algarOct)
+    missaoOct = ``
     for (let i = 0; i <= algarOct; i++) {
       missaoOct += Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
     }
@@ -317,10 +316,10 @@ function missao(valor) {
       missaoOct += Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
     }
 
-    missaoBin = `${(missaoBin / 1) == 0 ? 1 : (missaoBin / 1)}`
-    missaoDec = `${(missaoDec / 1) == 0 ? 1 : (missaoDec / 1)}`
-    missaoOct = `${(missaoOct / 1) == 0 ? 1 : (missaoOct / 1)}`
-    missaoHex = `${(missaoHex) === '0' ? '1' : (missaoHex)}`
+    missaoBin = `${(missaoBin / 1) == 0 ? 100 : (missaoBin / 1)}`
+    missaoDec = `${(missaoDec / 1) == 0 ? 100 : (missaoDec / 1)}`
+    missaoOct = `${(missaoOct / 1) == 0 ? 100 : (missaoOct / 1)}`
+    missaoHex = `${missaoHex === '0' ? '1' : missaoHex.startsWith('0') ? missaoHex.replace('0','1') : (missaoHex)}`
   }
 
   document.getElementById('divMissao').innerHTML = `
@@ -353,7 +352,7 @@ function pontuar(numero, base, conversao) {
     mult *= -1
   }
 
-  pontuacao -= pontos * Math.floor(1 + (mult / 100))
+  pontuacao -= Math.floor(pontos * (1-(mult / 100)))
 
   if (pontuacao <= 0) {
     pontuacao = 0
