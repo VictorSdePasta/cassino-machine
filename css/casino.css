@@ -142,3 +142,7 @@ input {
 .campoResultado {
   display: flex;
 }
+
+.missao {
+  font-size: .8rem;
+}

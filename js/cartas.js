@@ -5,50 +5,56 @@ let comeco = false
 let cartas = []
 let converteu = false
 let limiteMao
+let jogoComecou = false
+let limitou = false
 
-function sacarConversao() {
-  if (comeco && converteu) {
-    baseAtual = cartaConversao
-    converteu = false
-  }
+function sacarConversao(local) {
+  if ((local == 'site' && !jogoComecou) || local == 'codigo') {
+    jogoComecou = true
+    if (comeco && converteu) {
+      baseAtual = cartaConversao
+      converteu = false
+      limitarMao()
+    }
 
-  if (cartaConversao == 'decimal') {
-    cartaConversao = Math.ceil(Math.random() * 3 + 1)
-  } else if (cartaConversao == 'hexadecimal') {
-    cartaConversao = Math.ceil(Math.random() * 3 + 2)
-    if (cartaConversao == 5) { cartaConversao = 1 }
-  } else if (cartaConversao == 'octal') {
-    cartaConversao = Math.ceil(Math.random() * 3)
-    if (cartaConversao == 3) { cartaConversao = 4 }
-  } else if (cartaConversao == 'binario') {
-    cartaConversao = Math.ceil(Math.random() * 3)
-  } else {
-    cartaConversao = Math.ceil(Math.random() * 4 + 1)
-  }
+    if (cartaConversao == 'decimal') {
+      cartaConversao = Math.ceil(Math.random() * 3 + 1)
+    } else if (cartaConversao == 'hexadecimal') {
+      cartaConversao = Math.ceil(Math.random() * 3 + 2)
+      if (cartaConversao == 5) { cartaConversao = 1 }
+    } else if (cartaConversao == 'octal') {
+      cartaConversao = Math.ceil(Math.random() * 3)
+      if (cartaConversao == 3) { cartaConversao = 4 }
+    } else if (cartaConversao == 'binario') {
+      cartaConversao = Math.ceil(Math.random() * 3)
+    } else {
+      cartaConversao = Math.ceil(Math.random() * 4 + 1)
+    }
 
-  if (cartaConversao == 1) {
-    cartaConversao = 'decimal'
-    document.getElementById('divCartaConversao').innerHTML = `<img src="./css/assets/Edição imagens/convertion_card_decimal.png" alt="Carta Decimal" style="height: 15.98vh;">`
-  } else if (cartaConversao == 2) {
-    cartaConversao = 'hexadecimal'
-    document.getElementById('divCartaConversao').innerHTML = `<img src="./css/assets/Edição imagens/convertion_card_hexa.png" alt="Carta Hexadecimal" style="height: 15.98vh;">`
-  } else if (cartaConversao == 3) {
-    cartaConversao = 'octal'
-    document.getElementById('divCartaConversao').innerHTML = `<img src="./css/assets/Edição imagens/convertion_card_octal.png" alt="Carta Octal" style="height: 15.98vh;">`
-  } else {
-    cartaConversao = 'binario'
-    document.getElementById('divCartaConversao').innerHTML = `<img src="./css/assets/Edição imagens/convertion_card_binario.png" alt="Carta Binario" style="height: 15.98vh;">`
-  }
+    if (cartaConversao == 1) {
+      cartaConversao = 'decimal'
+      document.getElementById('divCartaConversao').innerHTML = `<img src="./css/assets/Edição imagens/convertion_card_decimal.png" alt="Carta Decimal" style="height: 15.98vh;">`
+    } else if (cartaConversao == 2) {
+      cartaConversao = 'hexadecimal'
+      document.getElementById('divCartaConversao').innerHTML = `<img src="./css/assets/Edição imagens/convertion_card_hexa.png" alt="Carta Hexadecimal" style="height: 15.98vh;">`
+    } else if (cartaConversao == 3) {
+      cartaConversao = 'octal'
+      document.getElementById('divCartaConversao').innerHTML = `<img src="./css/assets/Edição imagens/convertion_card_octal.png" alt="Carta Octal" style="height: 15.98vh;">`
+    } else {
+      cartaConversao = 'binario'
+      document.getElementById('divCartaConversao').innerHTML = `<img src="./css/assets/Edição imagens/convertion_card_binario.png" alt="Carta Binario" style="height: 15.98vh;">`
+    }
 
-  if (Math.random() <= chanceEspecial) {
-    chanceEspecial = .05
-    saqueEspecial()
-  } else {
-    chanceEspecial += .01
-  }
+    if (Math.random() <= chanceEspecial) {
+      chanceEspecial = .05
+      saqueEspecial()
+    } else {
+      chanceEspecial += .01
+    }
 
-  if (!comeco) {
-    saqueInicial()
+    if (!comeco) {
+      saqueInicial()
+    }
   }
 }
 
@@ -69,7 +75,7 @@ function saqueInicial() {
   } else {
     saqueIncicial = Math.ceil(Math.random() * 4 + 1)
   }
-  
+
   let numero = ''
 
   if (saqueIncicial == 1) {
@@ -93,6 +99,10 @@ function saqueInicial() {
       numero += Math.ceil(Math.random() * 2 - 1) //Sortear numero de 0 a 1
     }
   }
+
+  limitou = true
+  limitarMao()
+  missao()
 
   transformarCartas(baseAtual, numero)
   let msg = ``
@@ -160,13 +170,14 @@ function moverConversao(elementoCarta, carta) {
     ordemConversao.push(carta)
   }
 
+  limitou = true
   converter()
 }
 
 function converter() {
   novoTurno = true
   converteu = true
-  
+
   let numeroAConverter = ''
   let numeroConvertido = ''
   let msg = ``
@@ -186,6 +197,8 @@ function converter() {
   } else if (cartaConversao == 'binario') {
     numeroConvertido = `${decimalValue.toString(2)}`;
   }
+
+  missao(numeroConvertido)
 
   let novasCartas = []
 
@@ -216,14 +229,14 @@ function moverMao(eliminar, carta) {
     novoTurno = false
     cartas = []
     ordemConversao = []
+
+    sacarConversao('codigo')
   }
 
-  let limiteCartas = cartaConversao == 'decimal' ? 5 : cartaConversao == 'binario' ? 16 : cartaConversao == 'hexadecimal' ? 4 : 6
-  
-  if (cartas.length<limiteCartas) {
+  if (cartas.length < limiteCartas) {
     cartas.push(carta)
     document.getElementById(`${eliminar}`).remove()
-    
+
     let msg = ``
     for (let i = 0; i < cartas.length; i++) {
       conversoes++
@@ -231,4 +244,72 @@ function moverMao(eliminar, carta) {
     };
     document.getElementById('mao').innerHTML = msg
   }
+}
+
+let limiteCartas
+
+function limitarMao() {
+  if (limitou) {
+    limitou = false
+    limiteCartas = (baseAtual === 'decimal' ? 5 : baseAtual === 'binario' ? 16 : baseAtual === 'hexadecimal' ? 4 : 6)
+  }
+}
+
+let missaoBin = ''
+let missaoDec = ''
+let missaoHex = ''
+let missaoOct = ''
+function missao(valor) {
+  if (valor == missaoBin) {
+    let algarBin = Math.ceil(Math.random() * 15 - 1)
+    for (let i = 0; i <= algarBin; i++) {
+      missaoBin += Math.ceil(Math.random() * 2 - 1) //Sortear numero de 0 a 1
+    }
+    missaoBin = `${missaoBin / 1}`
+  } else if (valor == missaoDec) {
+    let algarDec = Math.ceil(Math.random() * 6 - 1)
+    for (let i = 0; i <= algarDec; i++) {
+      missaoDec += Math.ceil(Math.random() * 10 - 1) //Sortear numero de 0 a 9
+    }
+    missaoDec = `${missaoDec / 1}`
+  } else if (valor == missaoHex) {
+    let algarHex = Math.ceil(Math.random() * 5 - 1)
+    for (let i = 0; i <= algarHex; i++) {
+      missaoHex += '0123456789ABCDEF'[Math.ceil(Math.random() * 16 - 1)] //Sortear numero de 0 a 15
+    }
+  } else if (valor == missaoOct) {
+    let algarOct = Math.ceil(Math.random() * 7 - 1)
+    for (let i = 0; i <= algarOct; i++) {
+      missaoOct += Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
+    }
+    missaoOct = `${missaoOct / 1}`
+  } else if (missaoBin == '') {
+    let algarBin = Math.ceil(Math.random() * 15 - 1)
+    for (let i = 0; i <= algarBin; i++) {
+      missaoBin += Math.ceil(Math.random() * 2 - 1) //Sortear numero de 0 a 1
+    }
+    let algarDec = Math.ceil(Math.random() * 6 - 1)
+    for (let i = 0; i <= algarDec; i++) {
+      missaoDec += Math.ceil(Math.random() * 10 - 1) //Sortear numero de 0 a 9
+    }
+    let algarHex = Math.ceil(Math.random() * 5 - 1)
+    for (let i = 0; i <= algarHex; i++) {
+      missaoHex += '0123456789ABCDEF'[Math.ceil(Math.random() * 16 - 1)] //Sortear numero de 0 a 15
+    }
+    let algarOct = Math.ceil(Math.random() * 7 - 1)
+    for (let i = 0; i <= algarOct; i++) {
+      missaoOct += Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
+    }
+    missaoBin = `${missaoBin / 1}`
+    missaoDec = `${missaoDec / 1}`
+    missaoOct = `${missaoOct / 1}`
+  }
+
+  document.getElementById('divMissao').innerHTML = `
+   Missões <br> Faça os números: <br>
+    ${missaoBin} - Bin ♥ <br>
+    ${missaoDec} - Dec ♠ <br>
+    ${missaoOct} - Oct ♦ <br>
+    ${missaoHex} - Hex ♣
+  `
 }
