@@ -24,13 +24,20 @@ body {
   width: 97vw;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
   font-family: "Pixelify Sans", sans-serif;
   cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0087.png'), auto;
 }
 
 a {
   cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0069.png'), auto;
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  border-top: white 3px solid;
+  border-bottom: white 3px solid;
 }
 
 .mesaSuperior {
@@ -44,12 +51,20 @@ a {
   background-size: contain;
   background-repeat: no-repeat;
   aspect-ratio: 5/1;
-  width: 28.646vw;
+  width: 40.646vw;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
   text-align: center;
+}
+
+.botoesMenu {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-evenly;
+  height: 40%;
 }
 
 .mesaMeio {
