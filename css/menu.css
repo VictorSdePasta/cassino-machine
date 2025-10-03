@@ -1,11 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
 
-.root {
-  margin: 0;
-  padding: 0;
-  font-family: "Pixelify Sans", sans-serif;
-}
-
 button {
   background: none;
   border: none;
@@ -15,7 +9,6 @@ button {
 }
 
 body {
-  font-size: 2vw;
   background-image: url('./assets/0-images/casino\ table.png');
   background-size: cover;
   background-repeat: no-repeat;
@@ -29,10 +22,23 @@ body {
   cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0087.png'), auto;
 }
 
+.fundoBotao {
+  background-image: url('./assets/Edição\ imagens/botao_menu.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 9vh;
+  aspect-ratio: 3/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotateX(180deg);
+}
+
 a {
   cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0069.png'), auto;
   text-decoration: none;
   color: white;
+  transform: rotateX(180deg) translateY(-.5vh);
 }
 
 a:hover {
@@ -65,101 +71,4 @@ a:hover {
   text-align: center;
   justify-content: space-evenly;
   height: 40%;
-}
-
-.mesaMeio {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.linha {
-  display: flex;
-}
-
-.campoBaralho {
-  margin-left: 4.5vw;
-}
-
-.missao {
-  text-align: right;
-  font-size: .5em;
-  margin-right: 2.5vw;
-}
-
-.mesaInferior {
-  display: flex;
-  flex-direction: column;
-}
-
-.mao {
-  align-self: center;
-  display: flex;
-  height: 15.98vh;
-  cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0069.png'), auto;
-}
-
-label {
-  cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0069.png'), auto;
-}
-
-input {
-  cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0069.png'), auto;
-  height: 100%;
-  all: unset;
-}
-
-.hud {
-  width: 100%;
-  padding-left: 1%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  & button {
-    & img {
-      width: 2.28vw;
-      aspect-ratio: 1/1;
-    }
-  }
-
-  & a {
-    & img {
-      width: 2.28vw;
-      aspect-ratio: 1/1;
-    }
-  }
-}
-
-.placar {
-  background-image: url('./assets/Edição\ imagens/placar.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  width: 29.297vw;
-  aspect-ratio: 6/1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  & .titulo {
-    margin-left: 2vh;
-  }
-
-  & .pontuacao {
-    margin-right: 2vh;
-    text-align: right;
-  }
-}
-
-.conversor {
-  display: flex;
-  height: 100%;
-}
-
-.campoResultado {
-  display: flex;
-}
-
-.missao {
-  font-size: .8rem;
 }

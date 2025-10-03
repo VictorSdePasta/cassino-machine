@@ -2,39 +2,46 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversor de Bases</title>
-    <link rel="stylesheet" href="./css/machine.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversor de Bases</title>
+  <link rel="stylesheet" href="./css/machine.css">
 </head>
 
 <body>
-    <!-- contêiner principal -->
-    <div id="container">
-        <!-- título da página -->
-        <h1>SPTecher's Machine</h1>
-        <!-- entrada de valor -->
-        <input id="inputValue" type="text" placeholder="Digite o valor">
-        <!-- seleção da base -->
-        <select id="inputBase">
-            <option value="decimal">Decimal</option>
-            <option value="hexadecimal">Hexadecimal</option>
-            <option value="octal">Octal</option>
-            <option value="binario">Binário</option>
-        </select>
-        <br><br>
-        <!-- opções de conversão -->
-        <h3>Converter para:</h3>
-        <input type="checkbox" id="convertDecimal"><label for="convertDecimal">Decimal</label>
-        <input type="checkbox" id="convertHexadecimal"><label for="convertHexadecimal">Hexadecimal</label>
-        <input type="checkbox" id="convertOctal"><label for="convertOctal">Octal</label>
-        <input type="checkbox" id="convertBinario"><label for="convertBinario">Binário</label>
-        <br><br>
-        <!-- botão de conversão -->
-        <button onclick="converter()">Converter</button>
-        <!-- saída de resultados -->
-        <div id="output"></div>
+  <div class="mesaSuperior">
+    <div class="logo">Nesh's Machine</div>
+    <div class="entradas">
+      <input id="inputValue" type="text" placeholder="Digite o valor">
+      <select id="inputBase">
+        <option value="decimal">Decimal</option>
+        <option value="hexadecimal">Hexadecimal</option>
+        <option value="octal">Octal</option>
+        <option value="binario">Binário</option>
+      </select>
     </div>
+  </div>
+  <div class="mesaMeio">
+    <div class="opcoesConversao">
+      <h3>Converter para:</h3>
+      <input type="checkbox" id="convertDecimal"><label for="convertDecimal">Decimal</label>
+      <input type="checkbox" id="convertHexadecimal"><label for="convertHexadecimal">Hexadecimal</label>
+      <input type="checkbox" id="convertOctal"><label for="convertOctal">Octal</label>
+      <input type="checkbox" id="convertBinario"><label for="convertBinario">Binário</label>
+      <br><br>
+      <button onclick="converter()">Converter</button>
+    </div>
+    <div class="saida">
+    </div>
+  </div>
+  <div class="mesaInferior" id="output">
+    <div class="mao" id="mao"></div>
+    <div class="hud">
+      <a href="./index.html"><img src="./css/assets/kenney_cursor-pixel-pack/Tiles/tile_0073.png" alt="Voltar"></a>
+     <button onclick="musica()"><img src="./css/assets/Edição imagens/audio.png" alt="Música"></button>
+    </div>
+  </div>
+  </div>
 </body>
 <script src="./js/calculo.js"></script>
 

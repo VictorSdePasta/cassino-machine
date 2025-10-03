@@ -1,84 +1,126 @@
-/* estilo para o corpo da página */
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
+
+:root{
+  font-size: 2vw;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  /* define a fonte utilizada */
-  background-color: #63B1BC;
-  /* define a cor de fundo do corpo da página */
-  margin: 0;
-  /* remove margens externas */
-  padding: 0;
-  /* remove preenchimento externo */
+  font-family: "Pixelify Sans", sans-serif;
+  background-image: url('./assets/0-images/casino\ table.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 97vh;
+  width: 97vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0087.png'), auto;
 }
 
-/* estilo para o contêiner principal */
-#container {
-  width: 80%;
-  /* define a largura do contêiner */
-  margin: 50px auto;
-  /* centraliza o contêiner horizontalmente */
+.mesaSuperior {
+  width: 100%;
+  height: 18%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  & select {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+}
+
+.mesaMeio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 60%;
+  width: 100%;
   text-align: center;
-  /* alinha o conteúdo ao centro */
+
+  & button {
+    background-color: #ED145B;
+    color: #FFFFFF;
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+
+  & button:hover {
+    background-color: #EFB661;
+  }
 }
 
-/* estilo para o cabeçalho */
+.mesaInferior {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.logo {
+  background-image: url('./assets/Edição\ imagens/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  aspect-ratio: 5/1;
+  width: 30.646vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
 h1 {
   color: #1F2A44;
-  /* define a cor do texto do cabeçalho */
 }
 
-/* estilo para a entrada de texto */
+input[type="checkbox"] {
+  cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0069.png'), auto;
+}
+
 input[type="text"] {
   padding: 8px;
-  /* define o preenchimento interno */
   font-size: 16px;
-  /* define o tamanho da fonte */
   border-radius: 5px;
-  /* define o raio das bordas */
+  cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0069.png'), auto;
 }
 
-/* estilo para seleção e botão */
-select,
 button {
-  padding: 8px;
-  /* define o preenchimento interno */
-  font-size: 16px;
-  /* define o tamanho da fonte */
-  border-radius: 5px;
-  /* define o raio das bordas */
-  cursor: pointer;
-  /* altera o cursor ao passar por cima */
-}
-
-/* estilo para o botão */
-button {
-  background-color: #ED145B;
-  /* define a cor de fundo do botão */
-  color: #FFFFFF;
-  /* define a cor do texto do botão */
+  background: none;
   border: none;
-  /* remove a borda do botão */
+  margin: 0;
+  padding: 0;
+  cursor: url('./assets/kenney_cursor-pixel-pack/Tiles/tile_0069.png'), auto;
 }
 
-/* estilo para o botão ao passar o mouse por cima */
-button:hover {
-  background-color: #EFB661;
-  /* altera a cor de fundo ao passar o mouse */
+.hud {
+  width: 100%;
+  padding-left: 1%;
+  display: flex;
+  gap: .5%;
+  align-items: center;
+
+  & button {
+    & img {
+      width: 2.28vw;
+      aspect-ratio: 1/1;
+    }
+  }
+
+  & a {
+    & img {
+      width: 2.28vw;
+      aspect-ratio: 1/1;
+    }
+  }
 }
 
-/* estilo para a saída de resultados */
-#output {
-  margin-top: 20px;
-  /* define a margem superior */
-  padding: 10px;
-  /* define o preenchimento interno */
-  border-radius: 5px;
-  /* define o raio das bordas */
-  background-color: #D0D3D4;
-  /* define a cor de fundo */
-  border: 1px solid #63666A;
-  /* define a borda */
-  text-align: left;
-  /* alinha o texto à esquerda */
-  display: none;
-  /* inicialmente oculta a saída */
+.linha {
+  display: flex;
 }
