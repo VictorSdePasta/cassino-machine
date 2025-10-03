@@ -57,7 +57,8 @@ a:hover {
   background-size: contain;
   background-repeat: no-repeat;
   aspect-ratio: 5/1;
-  width: 40.646vw;
+  width: 30.646vw;
+  font-size: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
