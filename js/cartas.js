@@ -1,362 +1,294 @@
-let cartaConversao = ''
-let baseAtual = ''
-let chanceEspecial = .05
-let comeco = false
-let cartas = []
-let converteu = false
-let limiteMao
-let jogoComecou = false
-let limitou = false
-let pontuacao = Math.floor(Math.random() * 9999 + 1)
-document.getElementById('divPontuacao').innerHTML = pontuacao
+// ===== CONFIG =====
+const BASES = {
+  decimal: { base: 10, length: 4, naipe: 'spades', chars: '0123456789' },
+  hexadecimal: { base: 16, length: 3, naipe: 'clubs', chars: '0123456789ABCDEF' },
+  octal: { base: 8, length: 4, naipe: 'diamonds', chars: '01234567' },
+  binario: { base: 2, length: 6, naipe: 'hearts', chars: '01' }
+};
 
+const CARTAS_CONVERSAO = [
+  'decimal',
+  'hexadecimal',
+  'octal',
+  'binario'
+];
+
+// ===== STATE =====
+let cartaConversao = '';
+let baseAtual = '';
+let cartas = [];
+let ordemConversao = [];
+
+let chanceEspecial = 0.05;
+let comeco = false;
+let converteu = false;
+let jogoComecou = false;
+let novoTurno = false;
+let limiteCartas;
+let pontuacao = random(1, 9999);
+
+// ===== INIT =====
+document.getElementById('divPontuacao').innerHTML = pontuacao;
+
+// ===== HELPERS =====
+function random(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function randomChar(chars) {
+  return chars[random(0, chars.length - 1)];
+}
+
+function getNovaBase(diferenteDe) {
+  let nova;
+  do {
+    nova = CARTAS_CONVERSAO[random(0, 3)];
+  } while (nova === diferenteDe);
+  return nova;
+}
+
+function gerarNumero(base) {
+  const cfg = BASES[base];
+  let num = '';
+
+  for (let i = 0; i < cfg.length; i++) {
+    num += randomChar(cfg.chars);
+  }
+
+  return num;
+}
+
+function gerarCartas(base, valor) {
+  const { naipe } = BASES[base];
+  return valor.split('').map(v => `card_${naipe}_${v}.png`);
+}
+
+function renderCartas(lista, container, callback) {
+  let html = '';
+
+  lista.forEach((carta, i) => {
+    html += `
+      <div id="campoCarta${container}${i}">
+        <input type="checkbox" id="carta${container}${i}">
+        <label 
+          class="labelCarta"
+          for="carta${container}${i}"
+          onclick="${callback}('campoCarta${container}${i}', '${carta}')"
+        >
+          <img 
+            src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${carta}" 
+            style="height: 15.98vh"
+          >
+        </label>
+      </div>
+    `;
+  });
+
+  document.getElementById(container).innerHTML = html;
+}
+
+
+// ===== GAME FLOW =====
 function sacarConversao(local) {
-  if ((local == 'site' && !jogoComecou) || local == 'codigo') {
-    jogoComecou = true
+  if ((local === 'site' && !jogoComecou) || local === 'codigo') {
+    jogoComecou = true;
+
     if (comeco && converteu) {
-      baseAtual = cartaConversao
-      converteu = false
-      limitarMao()
+      baseAtual = cartaConversao;
+      converteu = false;
+      limitarMao();
     }
 
-    if (cartaConversao == 'decimal') {
-      cartaConversao = Math.ceil(Math.random() * 3 + 1)
-    } else if (cartaConversao == 'hexadecimal') {
-      cartaConversao = Math.ceil(Math.random() * 3 + 2)
-      if (cartaConversao == 5) { cartaConversao = 1 }
-    } else if (cartaConversao == 'octal') {
-      cartaConversao = Math.ceil(Math.random() * 3)
-      if (cartaConversao == 3) { cartaConversao = 4 }
-    } else if (cartaConversao == 'binario') {
-      cartaConversao = Math.ceil(Math.random() * 3)
-    } else {
-      cartaConversao = Math.ceil(Math.random() * 4 + 1)
-    }
-
-    if (cartaConversao == 1) {
-      cartaConversao = 'decimal'
-      document.getElementById('divCartaConversao').innerHTML = `<img src="./css/assets/Edição imagens/convertion_card_decimal.png" alt="Carta Decimal" style="height: 15.98vh;">`
-    } else if (cartaConversao == 2) {
-      cartaConversao = 'hexadecimal'
-      document.getElementById('divCartaConversao').innerHTML = `<img src="./css/assets/Edição imagens/convertion_card_hexa.png" alt="Carta Hexadecimal" style="height: 15.98vh;">`
-    } else if (cartaConversao == 3) {
-      cartaConversao = 'octal'
-      document.getElementById('divCartaConversao').innerHTML = `<img src="./css/assets/Edição imagens/convertion_card_octal.png" alt="Carta Octal" style="height: 15.98vh;">`
-    } else {
-      cartaConversao = 'binario'
-      document.getElementById('divCartaConversao').innerHTML = `<img src="./css/assets/Edição imagens/convertion_card_binario.png" alt="Carta Binario" style="height: 15.98vh;">`
-    }
+    cartaConversao = getNovaBase(cartaConversao);
+    renderCartaConversao(cartaConversao);
 
     if (Math.random() <= chanceEspecial) {
-      chanceEspecial = .05
-      saqueEspecial()
+      chanceEspecial = 0.05;
+      saqueEspecial();
     } else {
-      chanceEspecial += .01
+      chanceEspecial += 0.01;
     }
 
-    if (!comeco) {
-      saqueInicial()
-    }
+    if (!comeco) saqueInicial();
   }
 }
 
 function saqueInicial() {
-  comeco = true
+  comeco = true;
 
-  let saqueIncicial
-  if (cartaConversao == 'decimal') {
-    saqueIncicial = Math.ceil(Math.random() * 3 + 1)
-  } else if (cartaConversao == 'hexadecimal') {
-    saqueIncicial = Math.ceil(Math.random() * 3 + 2)
-    if (cartaConversao == 5) { cartaConversao = 1 }
-  } else if (cartaConversao == 'octal') {
-    saqueIncicial = Math.ceil(Math.random() * 3)
-    if (cartaConversao == 3) { cartaConversao = 4 }
-  } else if (cartaConversao == 'binario') {
-    saqueIncicial = Math.ceil(Math.random() * 3)
-  } else {
-    saqueIncicial = Math.ceil(Math.random() * 4 + 1)
-  }
+  baseAtual = getNovaBase();
+  let numero = gerarNumero(baseAtual);
 
-  let numero = ''
+  cartas = gerarCartas(baseAtual, numero);
 
-  if (saqueIncicial == 1) {
-    baseAtual = 'decimal'
-    for (let i = 0; i <= 3; i++) {
-      numero += Math.ceil(Math.random() * 10 - 1) //Sortear numero de 0 a 9
-    }
-  } else if (saqueIncicial == 2) {
-    baseAtual = 'hexadecimal'
-    for (let i = 0; i <= 2; i++) {
-      numero += '0123456789ABCDEF'[Math.ceil(Math.random() * 16 - 1)] //Sortear numero de 0 a 15
-    }
-  } else if (saqueIncicial == 3) {
-    baseAtual = 'octal'
-    for (let i = 0; i <= 3; i++) {
-      numero += Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
-    }
-  } else {
-    baseAtual = 'binario'
-    for (let i = 0; i <= 5; i++) {
-      numero += Math.ceil(Math.random() * 2 - 1) //Sortear numero de 0 a 1
-    }
-  }
+  limitarMao();
 
-  limitou = true
-  limitarMao()
-  missao()
-
-  transformarCartas(baseAtual, numero)
-  let msg = ``
-  for (let i = 0; i < cartas.length; i++) {
-    conversoes++
-    msg += `<div id="campoCartaMao${i}"><input type="checkbox" id="cartaMao${i}"><label class="labelCarta" for="cartaMao${i}" onclick="moverConversao('campoCartaMao${i}', '${cartas[i]}')"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${cartas[i]}" style="height: 15.98vh"></label></div>`
-  };
-  document.getElementById('mao').innerHTML = msg
+  renderCartas(cartas, 'mao', 'moverConversao');
 }
 
-function saqueEspecial() {
-  let especial = Math.random().toFixed(2)
-  if (especial <= .05) {
-    // Comprar 3 cartas especiais
-  } else if (especial <= .2) {
-    // Sacar nova mão
-  } else if (especial <= .4) {
-    // Escolhe o sistema de conversão
-  } else if (especial <= .8) {
-    // Multiplica por 2, 5 ou 7
-  } else {
-    // Valor Máximo
-  }
-}
+function moverConversao(id, carta) {
+  document.getElementById('divConversor')
+    .appendChild(document.getElementById(id));
 
-function transformarCartas(base, valor) {
-  cartas = [];
-  if (base == 'decimal') {
-    for (let i = 0; i < valor.length - 1;) {
-      cartas.push(`card_spades_${valor[i]}.png`)
-      i++
-    }
-  } else if (base == 'hexadecimal') {
-    for (let i = 0; i < valor.length - 1;) {
-      cartas.push(`card_clubs_${valor[i]}.png`)
-      i++
-    }
-  } else if (base == 'octal') {
-    for (let i = 0; i < valor.length - 1;) {
-      cartas.push(`card_diamonds_${valor[i]}.png`)
-      i++
-    }
-  } else {
-    for (let i = 0; i < valor.length - 1;) {
-      cartas.push(`card_hearts_${valor[i]}.png`)
-      i++
-    }
-  }
-}
+  ordemConversao.push(carta);
 
-let ordemConversao = []
-let conversoes = 0
-
-function moverConversao(elementoCarta, carta) {
-  let cartaAMover = document.getElementById(`${elementoCarta}`)
-  let destino = document.getElementById(`divConversor`)
-  destino.appendChild(cartaAMover)
-
-  let limiteMaximo = conversoes
-
-  if (ordemConversao.length < limiteMaximo) {
-    ordemConversao.push(carta)
-  } else {
-    ordemConversao.shift()
-    ordemConversao.push(carta)
-  }
-
-  limitou = true
-  converter()
+  converter();
 }
 
 function converter() {
-  novoTurno = true
-  converteu = true
+  novoTurno = true;
+  converteu = true;
 
-  let numeroAConverter = ''
-  let numeroConvertido = ''
-  let msg = ``
-  for (let i = 0; i <= ordemConversao.length - 1; i++) {
-    let caracter = ordemConversao[i].length - 5
-    numeroAConverter += `${ordemConversao[i][caracter]}`
-  };
+  let numero = ordemConversao
+    .map(c => c[c.length - 5])
+    .join('');
 
-  let decimalValue = parseInt(numeroAConverter, baseAtual === 'hexadecimal' ? 16 : baseAtual === 'octal' ? 8 : baseAtual === 'binario' ? 2 : 10);
+  let decimal = parseInt(numero, BASES[baseAtual].base);
 
-  pontuar(decimalValue, baseAtual, cartaConversao)
+  pontuar(decimal);
 
-  if (cartaConversao == 'decimal') {
-    numeroConvertido = `${decimalValue}`;
-  } else if (cartaConversao == 'hexadecimal') {
-    numeroConvertido = `${decimalValue.toString(16).toUpperCase()}`;
-  } else if (cartaConversao == 'octal') {
-    numeroConvertido = `${decimalValue.toString(8)}`;
-  } else if (cartaConversao == 'binario') {
-    numeroConvertido = `${decimalValue.toString(2)}`;
-  }
+  let convertido = decimal.toString(BASES[cartaConversao].base).toUpperCase();
 
-  missao(numeroAConverter)
-  missao(numeroConvertido)
+  let novasCartas = gerarCartas(cartaConversao, convertido);
 
-  let novasCartas = []
-
-  for (let i = 0; i <= numeroConvertido.length - 1; i++) {
-    if (cartaConversao == 'decimal') {
-      novasCartas.push(`card_spades_${numeroConvertido[i]}.png`)
-    } else if (cartaConversao == 'hexadecimal') {
-      novasCartas.push(`card_clubs_${numeroConvertido[i]}.png`)
-    } else if (cartaConversao == 'octal') {
-      novasCartas.push(`card_diamonds_${numeroConvertido[i]}.png`)
-    } else if (cartaConversao == 'binario') {
-      novasCartas.push(`card_hearts_${numeroConvertido[i]}.png`)
-    }
-  }
-
-  for (let i = 0; i <= numeroConvertido.length - 1; i++) {
-    msg += `<div id="campoCartaConvertido${i}"><input type="checkbox" id="cartaConvertida${i}"><label class="labelCarta" for="cartaConvertida${i}" onclick="moverMao('campoCartaConvertido${i}', '${novasCartas[i]}')"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${novasCartas[i]}" style="height: 15.98vh"></label></div>`
-  }
-  document.getElementById('divResultadoConversao').innerHTML = msg
+  renderCartas(novasCartas, 'divResultadoConversao', 'moverMao');
 }
 
-let novoTurno = false
-
-function moverMao(eliminar, carta) {
+function moverMao(id, carta) {
   if (novoTurno) {
-    document.getElementById(`divConversor`).innerHTML = ``
-    document.getElementById(`mao`).innerHTML = ``
-    novoTurno = false
-    cartas = []
-    ordemConversao = []
-
-    sacarConversao('codigo')
+    resetTurno();
+    sacarConversao('codigo');
   }
 
   if (cartas.length < limiteCartas) {
-    cartas.push(carta)
-    document.getElementById(`${eliminar}`).remove()
+    cartas.push(carta);
+    document.getElementById(id).remove();
 
-    let msg = ``
-    for (let i = 0; i < cartas.length; i++) {
-      conversoes++
-      msg += `<div id="campoCartaMao${i}"><input type="checkbox" id="cartaMao${i}"><label class="labelCarta" for="cartaMao${i}" onclick="moverConversao('campoCartaMao${i}', '${cartas[i]}')"><img src="./css/assets/kenney_playing-cards-pack/PNG/Cards (large)/${cartas[i]}" style="height: 15.98vh"></label></div>`
-    };
-    document.getElementById('mao').innerHTML = msg
+    renderCartas(cartas, 'mao', 'moverConversao');
   }
 }
 
-let limiteCartas
+function resetTurno() {
+  document.getElementById('divConversor').innerHTML = '';
+  document.getElementById('mao').innerHTML = '';
 
+  novoTurno = false;
+  cartas = [];
+  ordemConversao = [];
+}
+
+// ===== RULES =====
 function limitarMao() {
-  if (limitou) {
-    limitou = false
-    limiteCartas = (baseAtual === 'decimal' ? 5 : baseAtual === 'binario' ? 16 : baseAtual === 'hexadecimal' ? 4 : 6)
+  limiteCartas = {
+    decimal: 5,
+    binario: 16,
+    hexadecimal: 4,
+    octal: 6
+  }[baseAtual];
+}
+
+function pontuar(numero) {
+  pontuacao -= numero;
+  pontuacao = Math.max(0, pontuacao);
+
+  document.getElementById('divPontuacao').innerHTML = pontuacao;
+}
+
+// ===== ESPECIAL =====
+function saqueEspecial() {
+  let r = Math.random();
+
+  if (r <= 0.05) {
+    // 3 cartas especiais
+  } else if (r <= 0.2) {
+    // nova mão
+  } else if (r <= 0.4) {
+    // escolher base
+  } else if (r <= 0.8) {
+    // multiplicador
+  } else {
+    // max
   }
 }
 
-let missaoBin = ''
-let missaoDec = ''
-let missaoHex = ''
-let missaoOct = ''
+const MISSOES = {
+  binario: '',
+  decimal: '',
+  hexadecimal: '',
+  octal: ''
+};
 
-function missao(valor) {
-  if (valor == missaoBin) {
-    pontuacao -= missaoBin
-    let algarBin = Math.ceil(Math.random() * 8 - 1)
-    missaoBin = ``
-    for (let i = 0; i <= algarBin; i++) {
-      missaoBin += Math.ceil(Math.random() * 2 - 1) //Sortear numero de 0 a 1
-    }
-    missaoBin = `${missaoBin / 1}`
-  } else if (valor == missaoDec) {
-    pontuacao -= missaoDec
-    let algarDec = Math.ceil(Math.random() * 6 - 1)
-    missaoDec = ``
-    for (let i = 0; i <= algarDec; i++) {
-      missaoDec += Math.ceil(Math.random() * 10 - 1) //Sortear numero de 0 a 9
-      console.log(missaoDec)
-    }
-    missaoDec = `${missaoDec / 1}`
-  } else if (valor == missaoHex) {
-    pontuacao -= missaoHex
-    let algarHex = Math.ceil(Math.random() * 5 - 1)
-    missaoHex = ``
-    for (let i = 0; i <= algarHex; i++) {
-      missaoHex += '0123456789ABCDEF'[Math.ceil(Math.random() * 16 - 1)] //Sortear numero de 0 a 15
-    }
-  } else if (valor == missaoOct) {
-    pontuacao -= missaoOct
-    let algarOct = Math.ceil(Math.random() * 5 - 1)
-    missaoOct = ``
-    for (let i = 0; i <= algarOct; i++) {
-      missaoOct += Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
-    }
-    missaoOct = `${missaoOct / 1}`
-  } else if (missaoBin == '') {
-    let algarBin = Math.ceil(Math.random() * 8 - 1)
-    for (let i = 0; i <= algarBin; i++) {
-      missaoBin += Math.ceil(Math.random() * 2 - 1) //Sortear numero de 0 a 1
-    }
-    let algarDec = Math.ceil(Math.random() * 6 - 1)
-    for (let i = 0; i <= algarDec; i++) {
-      missaoDec += Math.ceil(Math.random() * 10 - 1) //Sortear numero de 0 a 9
-    }
-    let algarHex = Math.ceil(Math.random() * 5 - 1)
-    for (let i = 0; i <= algarHex; i++) {
-      missaoHex += '0123456789ABCDEF'[Math.ceil(Math.random() * 16 - 1)] //Sortear numero de 0 a 15
-    }
-    let algarOct = Math.ceil(Math.random() * 5 - 1)
-    for (let i = 0; i <= algarOct; i++) {
-      missaoOct += Math.ceil(Math.random() * 8 - 1) //Sortear numero de 0 a 7
-    }
+function gerarMissao(base) {
+  const cfg = BASES[base];
+  const tamanho = random(2, cfg.length + 2);
 
-    missaoBin = `${(missaoBin / 1) == 0 ? 100 : (missaoBin / 1)}`
-    missaoDec = `${(missaoDec / 1) == 0 ? 100 : (missaoDec / 1)}`
-    missaoOct = `${(missaoOct / 1) == 0 ? 100 : (missaoOct / 1)}`
-    missaoHex = `${missaoHex === '0' ? '1' : missaoHex.startsWith('0') ? missaoHex.replace('0','1') : (missaoHex)}`
+  let valor = '';
+  for (let i = 0; i < tamanho; i++) {
+    valor += randomChar(cfg.chars);
   }
 
+  // evitar zero
+  if (parseInt(valor, cfg.base) === 0) return gerarMissao(base);
+
+  return valor;
+}
+
+function inicializarMissoes() {
+  Object.keys(MISSOES).forEach(base => {
+    MISSOES[base] = gerarMissao(base);
+  });
+
+  atualizarUI();
+}
+
+function verificarMissao(valor) {
+  for (let base in MISSOES) {
+    if (valor == MISSOES[base]) {
+      pontuacao -= parseInt(valor, BASES[base].base);
+      MISSOES[base] = gerarMissao(base);
+    }
+  }
+
+  atualizarUI();
+}
+
+function atualizarUI() {
   document.getElementById('divMissao').innerHTML = `
-   Missões <br> Faça os números: <br>
-    ${missaoBin} - Bin ♥ <br>
-    ${missaoDec} - Dec ♠ <br>
-    ${missaoOct} - Oct ♦ <br>
-    ${missaoHex} - Hex ♣
-  `
+    Missões <br>
+    ${MISSOES.binario} - Bin ♥ <br>
+    ${MISSOES.decimal} - Dec ♠ <br>
+    ${MISSOES.octal} - Oct ♦ <br>
+    ${MISSOES.hexadecimal} - Hex ♣
+  `;
 }
 
-function pontuar(numero, base, conversao) {
-  let pontos = numero
+function renderCartaConversao(base) {
+  const mapa = {
+    decimal: {
+      img: 'convertion_card_decimal.png',
+      alt: 'Carta Decimal'
+    },
+    hexadecimal: {
+      img: 'convertion_card_hexa.png',
+      alt: 'Carta Hexadecimal'
+    },
+    octal: {
+      img: 'convertion_card_octal.png',
+      alt: 'Carta Octal'
+    },
+    binario: {
+      img: 'convertion_card_binario.png',
+      alt: 'Carta Binario'
+    }
+  };
 
-  let lista
+  const carta = mapa[base];
 
-  if (base == 'hexadecimal') {
-    lista = ['hexadecimal', 'binario', 'decimal', 'octal']
-  } else if (base == 'decimal') {
-    lista = ['decimal', 'octal', 'hexadecimal', 'binario']
-  } else if (base == 'binario') {
-    lista = ['binario', 'hexadecimal', 'octal', 'decimal']
-  } else if (base == 'octal') {
-    lista = ['octal', 'decimal', 'binario', 'hexadecimal']
-  }
-
-  let mult = Number(lista.indexOf(base) - lista.indexOf(conversao))
-
-  if (mult < 0) {
-    mult *= -1
-  }
-
-  pontuacao -= Math.floor(pontos * (1-(mult / 100)))
-
-  if (pontuacao <= 0) {
-    pontuacao = 0
-  }
-
-  document.getElementById('divPontuacao').innerHTML = pontuacao
+  document.getElementById('divCartaConversao').innerHTML = `
+    <img 
+      src="./css/assets/Edição imagens/${carta.img}" 
+      alt="${carta.alt}" 
+      style="height: 15.98vh;"
+    >
+  `;
 }
